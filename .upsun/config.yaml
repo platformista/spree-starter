@@ -69,6 +69,9 @@ applications:
         # Run database migrations
         bundle exec rails db:migrate
 
+        # Seed database (only if not already seeded)
+        bundle exec rails deploy:seed_once
+
     workers:
       sidekiq:
         commands:
