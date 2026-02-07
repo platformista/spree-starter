@@ -19,8 +19,6 @@ applications:
         RAILS_TMP: '/tmp'
         TARGET_RUBY_VERSION: '~>3.4' # this will allow to not fail on PATCH update of the image
 
-
-
     relationships:
       db: "pg:postgresql"
       redis: "redis:redis"
