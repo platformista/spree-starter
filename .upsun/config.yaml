@@ -1,0 +1,104 @@
+# .upsun/config.yaml
+# Upsun configuration for SpreeCommerce (Spree Starter)
+# Documentation: https://docs.upsun.com/languages/ruby.html
+
+applications:
+  spree:
+    source:
+      root: "/"
+
+    type: "ruby:3.4"
+
+    variables:
+      env:
+        BUNDLE_WITHOUT: 'development:test'
+        PIDFILE: "tmp/server.pid"
+        RACK_ENV: 'production'
+        RAILS_ENV: 'production'
+        RAILS_LOG_TO_STDOUT: '1'
+        RAILS_TMP: '/tmp'
+        TARGET_RUBY_VERSION: '~>3.4' # this will allow to not fail on PATCH update of the image
+
+
+
+    relationships:
+      db: "pg:postgresql"
+      redis: "redis:redis"
+
+    mounts:
+      "/storage":
+        source: "storage"
+        source_path: "storage"
+      "/tmp":
+        source: "tmp"
+        source_path: "tmp"
+      "/log":
+        source: "tmp"
+        source_path: "log"
+      "/.bundle":
+        source: "storage"
+        source_path: "bundle"
+
+    web:
+      commands:
+        start: "bundle exec puma -C config/puma.rb -p $PORT"
+      locations:
+        "/":
+          root: "public"
+          passthru: true
+          expires: 1h
+          allow: true
+        "/assets":
+          root: "public/assets"
+          expires: 1y
+          allow: true
+
+    hooks:
+      build: |
+        set -e
+
+        bundle config set frozen false
+        
+        # Install gems
+        bundle install  
+
+        # Precompile assets
+        bundle exec rails assets:precompile
+
+      deploy: |
+        set -e
+
+        # Run database migrations
+        bundle exec rails db:migrate
+
+    workers:
+      sidekiq:
+        commands:
+          start: "bundle exec sidekiq"
+
+    crons:
+      # Example cron job - adjust as needed for Spree
+      cleanup:
+        spec: "0 3 * * *"
+        commands:
+          start: "bundle exec rails tmp:clear"
+
+services:
+  pg:
+    type: postgresql:18
+
+  redis:
+    type: redis:8.0
+
+routes:
+  "https://{default}/":
+    type: upstream
+    upstream: "spree:http"
+    cache:
+      enabled: true
+      cookies: ['*']
+      headers: ['Accept', 'Accept-Language']
+
+  "https://www.{default}/":
+    type: redirect
+    to: "https://{default}/"
