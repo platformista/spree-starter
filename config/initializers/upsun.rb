@@ -11,7 +11,7 @@ Rails.application.config.after_initialize do
       if primary_url.present?
         url = primary_url.chomp('/')
         store = Spree::Store.default
-        store&.update_column(:url, url) if store && store.url != url
+        store&.update_column(:url, url) if store&.persisted? && store.url != url
       end
     rescue StandardError => e
       Rails.logger.warn "Could not set Spree Store URL from PLATFORM_ROUTES: #{e.message}"
