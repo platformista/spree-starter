@@ -54,6 +54,7 @@ applications:
       build: |
         set -e
 
+        # Disable frozen Bundler lock
         bundle config set frozen false
         
         # Install gems
