@@ -7,7 +7,7 @@ applications:
     source:
       root: "/"
 
-    type: "ruby:3.4"
+    type: "ruby:4.0"
 
     variables:
       env:
@@ -15,7 +15,7 @@ applications:
         PIDFILE: "tmp/server.pid"
         RAILS_LOG_TO_STDOUT: '1'
         RAILS_TMP: '/tmp'
-        TARGET_RUBY_VERSION: '~>3.4' # this will allow to not fail on PATCH update of the image
+        TARGET_RUBY_VERSION: '~>4.0' # this will allow to not fail on PATCH update of the image
         # SECRET_KEY_BASE variable is generated automatically based on the PLATFORM_PROJECT_ENTROPY variable but you can change it.
 
     relationships:
