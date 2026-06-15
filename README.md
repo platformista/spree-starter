@@ -1,4 +1,15 @@
-# Spree Starter
+Unlimited Contacts
+360° Contact Overview
+Powerful Email Automation
+Unlimited Email Campaigns
+Email Sequences
+Advanced Reports
+Integrated Forms
+Custom Fields
+Smartlinks
+Advanced Segmentation
+45+ Free Integrations
+100+ More Features# Spree Starter
 
 This is a starter kit for [Spree Commerce](https://spreecommerce.org) - the [open-source eCommerce platform](https://spreecommerce.org) for [Rails](https://spreecommerce.org/category/ruby-on-rails/). 
 
